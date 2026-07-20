@@ -1,9 +1,9 @@
 === Product XML Feed Manager for WooCommerce - Google Shopping, Social Sites, Skroutz & More ===
 Contributors: wpcodefactory, omardabbas, karzin, anbinder, kousikmukherjeeli, aegkr
 Tags: woocommerce, product xml feeds, xml, export
-Requires at least: 4.4
-Tested up to: 6.9
-Stable tag: 3.0.0
+Requires at least: 5.3
+Tested up to: 7.0
+Stable tag: 3.1.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -38,7 +38,6 @@ Let's explore in more details what you can do with this plugin.
 * [Engine Templates: Amazing Woocommerce Product Feed Plugins](https://enginetemplates.com/woocommerce-product-feed-plugins/ "Engine Templates: Amazing Woocommerce Product Feed Plugins")
 * [L Theme: Top Best Woocommerce Product Feed plugins](https://ltheme.com/woocommerce-product-feed-plugins/ "L Theme: Top Best Woocommerce Product Feed plugins")
 * [Woo Sell Services: Best WooCommerce Product Import & Export Plugins For WordPress](https://woosellservices.com/woocommerce-product-import-plugins/ "Woo Sell Services: Best WooCommerce Product Import & Export Plugins For WordPress")
-* [Android Standard: 5 Best WooCommerce 🥇 2024 Product Feed Plugins](https://androidstandard.com/5-melhores-plug-ins-de-feed-de-produtos-woocommerce-%F0%9F%A5%87-2023/ "Android Standard: 5 Best WooCommerce 🥇 2024 Product Feed Plugins")
 * [SD Studio: 5 Best WooCommerce Product Feed Plugins](https://techblog.sdstudio.top/de/die-5-besten-woocommerce-produkt-feed-plugins-2022-kostenlos-und-kostenpflichtig/ "SD Studio: 5 Best WooCommerce Product Feed Plugins")
 
 ## 🚀 Main Features: FREE Version ##
@@ -131,6 +130,62 @@ WPFactory has a diverse range of plugins tailored to enhance your experience, so
 
 > “Simple and efficient, and the support is great: This plugin provides all the functionality I need even in free version. Inserting product information in XML is super easy with well documented shortcodes. I had a problem with shortcodes inside tag and Support responded quickly and found a solution instantly.” – ⭐⭐⭐⭐⭐ [Krzysztof Busłowicz](https://wordpress.org/support/topic/simple-and-efficient-and-the-support-is-great/)
 
+= Feedback =
+
+* We are open to your suggestions and feedback. Thank you for using or trying out one of our plugins!
+* [Visit plugin site](https://wpfactory.com/item/product-xml-feeds-woocommerce/).
+
+== Frequently Asked Questions ==
+
+= Source Code =
+
+The complete source code and build tools for this plugin are available at:
+
+[https://github.com/wpcodefactory/product-xml-feeds-for-woocommerce](https://github.com/wpcodefactory/product-xml-feeds-for-woocommerce)
+
+The source files used to generate the compiled assets are located in:
+
+* JavaScript source files: `assets/js/`
+* CSS source files: `assets/css/`
+
+Compiled production assets are located in:
+
+* `assets/build/`
+
+= Build & Development =
+
+The JavaScript and CSS files in the `assets/build/` directory are generated from the source files in `assets/js/` and `assets/css/` using WordPress Scripts and Webpack.
+
+**Build Tools:**
+
+* Node.js and npm
+* @wordpress/scripts
+* Webpack
+
+**Building the plugin from source:**
+
+1. Install dependencies:
+
+`npm install`
+
+2. Build production assets:
+
+`npm run build`
+
+3. Watch for development changes:
+
+`npm start`
+
+= External Services =
+
+The plugin may connect to the European Central Bank (ECB) to retrieve current currency exchange rates required to convert prices from one currency to another.
+
+This connection is made only when the `convert_currency_from` and `convert_currency_to` shortcode attributes are used. No user or website data is sent to the ECB. The plugin only retrieves the current currency exchange rates from:
+
+`https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml`
+
+[ECB privacy policy](https://www.ecb.europa.eu/services/data-protection/privacy-statements/html/ecb.privacy_statement_website.en.html).
+
 == Installation ==
 
 **Follow these simplified steps to get your plugin up and running:**
@@ -156,6 +211,30 @@ WPFactory has a diverse range of plugins tailored to enhance your experience, so
 Once activated, access the plugin's settings by navigating to the “WPFactory” menu and look for the relevant tab.
 
 == Changelog ==
+
+= 3.1.1 - 18/07/2026 =
+* Dev - Security - Create products XML - User capability check added.
+* Dev - Shortcodes - Security - `[alg_product_function]` - `alg_wc_product_xml_feeds_shortcode_allowed_functions` filter added.
+* Dev - Shortcodes - Security - `on_empty_apply_shortcodes` - Output escaped.
+* Dev - Shortcodes - ECB currency exchange rates URL updated.
+* Dev - Settings - AJAX URL determination improved.
+* Dev - Code refactoring and cleanup.
+* readme.txt updated.
+
+= 3.1.0 - 13/07/2026 =
+* Dev - Security - Improved output escaping.
+* Dev - Security - Improved input sanitization.
+* Dev - All CSS and JS moved to external files.
+* Dev - WPFactory Cross-Selling - Library updated (to v1.1.3).
+* Dev - WPFactory Admin Menu - Library updated (to v1.1.1).
+* Dev - WPFactory Key Manager - Library updated (to v1.0.8).
+* Dev - Code refactoring and cleanup.
+* Requires at least: 5.3.
+* WC tested up to: 10.9.
+
+= 3.0.1 - 22/05/2026 =
+* Tested up to: 7.0.
+* WC tested up to: 10.7.
 
 = 3.0.0 - 16/12/2025 =
 * Fix - Resolved AJAX issues on settings option filtering and AJAX-based XML feed creation.
@@ -351,10 +430,10 @@ Once activated, access the plugin's settings by navigating to the “WPFactory�
 * Verified compatibility with WooComemrce 6.6
 
 = 2.5.1 - 12/06/2022 =
-* Verified compatibily with  WooCommerce 6.5 & WordPress 6.0
+* Verified compatibility with  WooCommerce 6.5 & WordPress 6.0
 
 = 2.5 - 19/03/2022 =
-* Verified compatibily with  WooCommerce 6.3
+* Verified compatibility with  WooCommerce 6.3
 * Added new attribute select="min_price" to select the lowest price from variations
 
 = 2.4.1 - 18/02/2022 =
@@ -363,17 +442,17 @@ Once activated, access the plugin's settings by navigating to the “WPFactory�
 = 2.4 - 12/02/2022 =
 * Fixed a bug that showed draft products in feed in particular cases
 * Enhanced how feed should show products without stock
-* Verified compatibily with  WooCommerce 6.2
+* Verified compatibility with  WooCommerce 6.2
 
 = 2.3 - 28/01/2022 =
-* Verified compatibily with WordPress 5.9 & WooCommerce 6.1
+* Verified compatibility with WordPress 5.9 & WooCommerce 6.1
 
 = 2.2.6 - 11/10/2021 =
 * Fixed a bug related to duplicating variations with pre-set filters
 * Verified compatibility with WooCommerce 5.7
 
 = 2.2.5 - 20/09/2021 =
-* More WPML compatibilty with attribute exchange_rate for manual currency conversion when needed
+* More WPML compatibility with attribute exchange_rate for manual currency conversion when needed
 * Added 2 attributes to [alg_product_stock_availability] to show specific values (Y,N) based on stock status
 
 = 2.2.4 - 14/09/2021 =
@@ -400,16 +479,16 @@ Once activated, access the plugin's settings by navigating to the “WPFactory�
 * Verified compatibility with WooCommerce 5.4
 
 = 2.1.3 - 20/04/2021 =
-* Tested compatibilty with WC 5.2 & WP 5.7
+* Tested compatibility with WC 5.2 & WP 5.7
 
 = 2.1.2 - 28/02/2021 =
-* Tested compatibilty with WC 5.0
+* Tested compatibility with WC 5.0
 
 = 2.1.1 - 07/02/2021 =
 * Added options to multiply/add flat prices to regular price shortcode
 
 = 2.1 - 27/01/2021 =
-* Added shortcodes for compatibiltity with multi language stores
+* Added shortcodes for compatibility with multi language stores
 * Enhanced on shortcodes for proper results
 * Tested compatibility with WC 4.9
 
