@@ -3,7 +3,7 @@
 Plugin Name: Product XML Feed Manager for WooCommerce - Google Shopping, Social Sites, Skroutz & More
 Plugin URI: https://wpfactory.com/item/product-xml-feeds-woocommerce/
 Description: Create your own XML files using tens of preconfigured shortcodes for you on your WooCommerce store.
-Version: 3.1.3
+Version: 3.1.4
 Author: WPFactory
 Author URI: https://wpfactory.com
 Text Domain: product-xml-feeds-for-woocommerce
@@ -15,6 +15,25 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
 
 defined( 'ABSPATH' ) || exit;
+
+if ( ! function_exists( 'alg_wc_product_xml_feeds_activate' ) ) {
+	/**
+	 * On a fresh install, wait until the merchant saves or creates a feed before writing any feed file.
+	 * Sites that already used the plugin (a version or a created feed is stored) are not touched.
+	 *
+	 * @version 3.1.4
+	 * @since   3.1.4
+	 */
+	function alg_wc_product_xml_feeds_activate() {
+		if (
+			'' === get_option( 'alg_product_xml_feeds_version', '' ) &&
+			'' === get_option( 'alg_products_time_file_created_1', '' )
+		) {
+			update_option( 'alg_products_xml_feeds_wait_for_setup', 'yes', false );
+		}
+	}
+}
+register_activation_hook( __FILE__, 'alg_wc_product_xml_feeds_activate' );
 
 if ( 'product-xml-feeds-for-woocommerce.php' === basename( __FILE__ ) ) {
 	/**
@@ -36,7 +55,7 @@ if ( 'product-xml-feeds-for-woocommerce.php' === basename( __FILE__ ) ) {
 	}
 }
 
-defined( 'ALG_WC_PRODUCT_XML_FEEDS_VERSION' ) || define( 'ALG_WC_PRODUCT_XML_FEEDS_VERSION', '3.1.3' );
+defined( 'ALG_WC_PRODUCT_XML_FEEDS_VERSION' ) || define( 'ALG_WC_PRODUCT_XML_FEEDS_VERSION', '3.1.4' );
 
 defined( 'ALG_WC_PRODUCT_XML_FEEDS_FILE' ) || define( 'ALG_WC_PRODUCT_XML_FEEDS_FILE', __FILE__ );
 

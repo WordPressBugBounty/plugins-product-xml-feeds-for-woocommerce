@@ -2,7 +2,7 @@
 /**
  * Product XML Feeds for WooCommerce - Main Class
  *
- * @version 3.1.0
+ * @version 3.1.4
  * @since   1.0.0
  *
  * @author  WPFactory
@@ -163,7 +163,7 @@ final class Alg_WC_Product_XML_Feeds {
 	/**
 	 * admin.
 	 *
-	 * @version 3.0.0
+	 * @version 3.1.4
 	 * @since   1.4.0
 	 */
 	function admin() {
@@ -191,6 +191,15 @@ final class Alg_WC_Product_XML_Feeds {
 		add_filter(
 			'woocommerce_get_settings_pages',
 			array( $this, 'add_woocommerce_settings_tab' )
+		);
+
+		// New installs start updating feeds once the merchant saves the feed settings.
+		add_action(
+			'woocommerce_settings_save_alg_wc_product_xml_feeds',
+			function () {
+				delete_option( 'alg_products_xml_feeds_wait_for_setup' );
+			},
+			1
 		);
 
 		// Version updated

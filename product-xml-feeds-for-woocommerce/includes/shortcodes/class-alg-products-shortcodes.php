@@ -2,7 +2,7 @@
 /**
  * Product XML Feeds for WooCommerce - Products Shortcodes
  *
- * @version 3.1.2
+ * @version 3.1.4
  * @since   1.0.0
  *
  * @author  WPFactory
@@ -138,7 +138,7 @@ class Alg_Products_Shortcodes extends Alg_Shortcodes {
 	/**
 	 * Inits shortcode atts and properties.
 	 *
-	 * @version 1.3.0
+	 * @version 3.1.4
 	 * @since   1.0.0
 	 *
 	 * @param   array $atts Shortcode atts.
@@ -159,6 +159,14 @@ class Alg_Products_Shortcodes extends Alg_Shortcodes {
 		$the_post_type = get_post_type( $atts['product_id'] );
 		if ( 'product' !== $the_post_type && 'product_variation' !== $the_post_type ) {
 			return false;
+		}
+
+		// Content written by users who cannot manage WooCommerce: published, non-password products only.
+		if ( self::is_restricted_context() ) {
+			$check_id = ( 'product_variation' === $the_post_type ? wp_get_post_parent_id( $atts['product_id'] ) : $atts['product_id'] );
+			if ( 'publish' !== get_post_status( $check_id ) || post_password_required( $check_id ) || '' !== (string) get_post_field( 'post_password', $check_id ) ) {
+				return false;
+			}
 		}
 
 		// Class properties
@@ -325,10 +333,13 @@ class Alg_Products_Shortcodes extends Alg_Shortcodes {
 	/**
 	 * alg_product_variation_meta.
 	 *
-	 * @version 1.5.1
+	 * @version 3.1.4
 	 * @since   1.5.1
 	 */
 	function alg_product_variation_meta( $atts ) {
+		if ( self::is_restricted_context() && isset( $atts['key'] ) && is_protected_meta( (string) $atts['key'], 'post' ) ) {
+			return '';
+		}
 		$product = ( isset( $atts['sibling'] ) && 'yes' === $atts['sibling'] && ( $parent_product_id = $this->the_product->get_parent_id() ) ?
 			wc_get_product( $parent_product_id ) : $this->the_product );
 
@@ -383,7 +394,7 @@ class Alg_Products_Shortcodes extends Alg_Shortcodes {
 	/**
 	 * alg_product_function.
 	 *
-	 * @version 3.1.1
+	 * @version 3.1.4
 	 * @since   1.4.0
 	 */
 	function alg_product_function( $atts ) {
@@ -458,6 +469,14 @@ class Alg_Products_Shortcodes extends Alg_Shortcodes {
 			)
 		);
 		if ( ! in_array( $function_name, $allowed_functions, true ) ) {
+			return '';
+		}
+
+		// Never in content written by users who cannot manage WooCommerce.
+		if (
+			self::is_restricted_context() &&
+			in_array( $function_name, array( 'get_post_password', 'get_file_download_path', 'get_purchase_note', 'get_cogs_effective_value', 'get_cogs_total_value', 'get_cogs_value', 'get_cogs_value_html' ), true )
+		) {
 			return '';
 		}
 
@@ -986,14 +1005,15 @@ class Alg_Products_Shortcodes extends Alg_Shortcodes {
 	/**
 	 * alg_product_total_sales.
 	 *
-	 * @version 1.2.0
+	 * @version 3.1.4
 	 * @since   1.0.0
 	 */
 	function alg_product_total_sales( $atts ) {
 		$product_custom_fields = get_post_custom( $this->get_product_or_variation_parent_id( $this->the_product ) );
 		$total_sales           = ( isset( $product_custom_fields['total_sales'][0] ) ) ? $product_custom_fields['total_sales'][0] : '';
-		if ( 0 != $atts['offset'] ) {
-			$total_sales += $atts['offset'];
+		// An empty offset (the default) used to crash on PHP 8 ('' + ''); only add a real number.
+		if ( is_numeric( $atts['offset'] ) && 0 != $atts['offset'] ) {
+			$total_sales = ( is_numeric( $total_sales ) ? $total_sales : 0 ) + $atts['offset'];
 		}
 
 		return ( 0 == $total_sales && 'yes' === $atts['hide_if_zero'] ) ? '' : $total_sales;
@@ -1085,11 +1105,14 @@ class Alg_Products_Shortcodes extends Alg_Shortcodes {
 	/**
 	 * Get product meta.
 	 *
-	 * @version 1.0.0
+	 * @version 3.1.4
 	 * @since   1.0.0
 	 * @return  string
 	 */
 	function alg_product_meta( $atts ) {
+		if ( self::is_restricted_context() && is_protected_meta( (string) $atts['name'], 'post' ) ) {
+			return '';
+		}
 		if ( isset( $atts['product_id'] ) ) {
 			$meta = get_post_meta( $atts['product_id'], $atts['name'], true );
 			if ( isset( $atts['array_key'] ) ) {
@@ -1113,12 +1136,15 @@ class Alg_Products_Shortcodes extends Alg_Shortcodes {
 	/**
 	 * Get product custom field.
 	 *
-	 * @version 2.9.6
+	 * @version 3.1.4
 	 * @since   1.0.0
 	 *
 	 * @return  string
 	 */
 	function alg_product_custom_field( $atts ) {
+		if ( self::is_restricted_context() && is_protected_meta( (string) $atts['name'], 'post' ) ) {
+			return '';
+		}
 		$product_custom_fields = get_post_custom( $atts['product_id'] );
 		return ( $product_custom_fields[ $atts['name'] ][0] ?? '' );
 	}
